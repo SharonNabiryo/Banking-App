@@ -75,6 +75,10 @@ class Account:
     def getOwnerAccountNumber(self):
         return self.__accountNumber
 
+    # Updates the account number (used by Bank when a duplicate number is generated)
+    def setOwnerAccountNumber(self, accountNumber):
+        self.__accountNumber = accountNumber
+
     # Returns the balance of the account (in cents)
     def getBalance(self):
         return self.__balance

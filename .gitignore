@@ -1,1 +1,10 @@
 .DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+backend/*.db
+.pytest_cache/
+node_modules/
+frontend/dist/

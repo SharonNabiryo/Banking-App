@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "Martian Mono Variable", ui-monospace, monospace;
+
+  --color-forest-950: #091a16;
+  --color-forest-900: #0e2620;
+  --color-forest-800: #163a31;
+  --color-forest-700: #1f4e42;
+  --color-forest-600: #2b6556;
+  --color-copper-600: #a85a2c;
+  --color-copper-500: #c2703d;
+  --color-copper-400: #d98b57;
+  --color-copper-200: #f0c9a8;
+  --color-copper-100: #f8e6d6;
+  --color-paper: #f4eee3;
+  --color-card: #fbf8f2;
+  --color-line: #e2d9c8;
+  --color-muted: #6b6458;
+  --color-ink: #1d1a15;
+  --color-good: #2f7d5b;
+  --color-bad: #b4442f;
+
+  --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-fade: fade 0.3s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@layer base {
+  html { background: var(--color-paper); color: var(--color-ink); }
+  body { @apply font-sans antialiased; font-optical-sizing: auto; }
+  ::selection { background: var(--color-copper-200); }
+  :focus-visible { outline: 2px solid var(--color-copper-500); outline-offset: 2px; }
+}
+
+@utility grain {
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: -1;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  }
+}
+@utility input {
+  @apply w-full rounded-xl border border-line bg-white/70 px-4 py-3 text-ink placeholder:text-muted/60
+    transition focus:border-copper-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-copper-200/60;
+}
+@utility label { @apply mb-1.5 block text-sm font-medium text-muted; }
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold
+    transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary { @apply btn bg-forest-900 text-paper hover:bg-forest-700; }
+@utility btn-copper { @apply btn bg-copper-500 text-white hover:bg-copper-600; }
+@utility btn-ghost { @apply btn border border-line bg-card text-ink hover:border-copper-400; }
+@utility btn-danger { @apply btn bg-bad text-white hover:brightness-110; }
+@utility panel { @apply rounded-3xl border border-line bg-card; }
+@utility money { @apply font-mono tabular-nums tracking-tight; }
+
+/* ---------- splash ---------- */
+.coin-stage { perspective: 800px; }
+.coin { animation: coin-flip 1.6s cubic-bezier(0.5, 0, 0.3, 1) both; transform-style: preserve-3d; }
+@keyframes coin-flip {
+  0% { transform: translateY(-40px) rotateY(0deg) scale(0.6); opacity: 0; }
+  20% { opacity: 1; }
+  70% { transform: translateY(0) rotateY(720deg) scale(1); }
+  100% { transform: translateY(0) rotateY(720deg) scale(1); }
+}
+.splash-letter { display: inline-block; animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.splash-exit { animation: splash-out 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+@keyframes splash-out { to { transform: translateY(-100%); } }
+.shine { animation: shine 2.4s ease-in-out infinite; }
+@keyframes shine { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.6; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

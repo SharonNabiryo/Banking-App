@@ -1,5 +1,3 @@
-from contextlib import nullcontext
-
 from Bank import Bank
 from Account import Account
 from BankUtility import BankUtility
@@ -163,7 +161,7 @@ class BankManager:
                     amount = BankUtility.promptUserForPositiveNumber("Enter amount to withdraw in dollars and cents (e.g. 2.57): ")
 
                     # Check if the account has sufficient funds for the withdrawal
-                    if amount > account.getBalance():
+                    if amount > account.getBalance() / 100:
                         print(f"Insufficient funds in account {account.getOwnerAccountNumber()}")
                     else:
                         amount_in_cents = round(float(amount) * 100)
@@ -246,5 +244,6 @@ class BankManager:
             else:
                 print("Invalid choice.")
 
-bank_manager = BankManager()
-bank_manager.main()
+if __name__ == "__main__":
+    bank_manager = BankManager()
+    bank_manager.main()

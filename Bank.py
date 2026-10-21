@@ -39,7 +39,7 @@ class Bank:
            for acc in self.__accounts:
                if acc.getOwnerAccountNumber() == account.getOwnerAccountNumber():
                    # regenerate the account number if a duplicate is found
-                   account._accountNumber = BankUtility.generateRandomInteger(10000000, 99999999)
+                   account.setOwnerAccountNumber(BankUtility.generateRandomInteger(10000000, 99999999))
                    break # Exit the inner for loop and regenerate account number
 
            else:
@@ -97,7 +97,7 @@ class Bank:
        # Loop through all accounts and add interest to each one.
        for account in self.__accounts:
            current_balance = account.getBalance()
-           interest = current_balance * monthlyInterestRate
+           interest = round(current_balance * monthlyInterestRate)  # keep the balance in whole cents
            account.deposit(interest) # Add the interest to the account balance
            # Print the interest added and the new balance
            print(f"Deposited interest: ${interest / 100:.2f} into account number: {account.getOwnerAccountNumber()}, new balance: {account.getBalance() / 100:.2f} ")
