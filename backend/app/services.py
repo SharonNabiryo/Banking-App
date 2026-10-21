@@ -54,6 +54,7 @@ def register_user(email, password, first_name, last_name, ssn):
         last_name=last_name[:80].capitalize(),
         ssn_hash=ssn_hash,
         ssn_last4=ssn[-4:],
+        is_admin=email in current_app.config["ADMIN_EMAILS"],
     )
     user.set_password(password)
     db.session.add(user)

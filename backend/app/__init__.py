@@ -31,6 +31,14 @@ def create_app(config_class=Config):
 
     with app.app_context():
         db.create_all()
+        if app.config["SEED_DEMO"]:
+            from .cli import seed_demo
+            seed_demo()
+        # Drop connections opened during startup so forked gunicorn workers
+        # (--preload) each open their own instead of sharing one socket.
+        # (Skipped for SQLite, where an in-memory database would be lost.)
+        if db.engine.url.get_backend_name() != "sqlite":
+            db.engine.dispose()
 
     @app.get("/api/health")
     def health():

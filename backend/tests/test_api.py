@@ -118,3 +118,23 @@ def test_bank_capacity(app, client, user):
     open_account(client, user)
     res = client.post("/api/accounts", json={}, headers=user)
     assert res.status_code == 409
+
+
+def test_admin_emails_promoted_on_register(client):
+    headers = register(client, email="Boss@test.dev", ssn="999444555")
+    assert client.get("/api/auth/me", headers=headers).json["user"]["isAdmin"] is True
+    assert client.get("/api/admin/stats", headers=headers).status_code == 200
+
+
+def test_seed_demo_is_idempotent(app, client):
+    from app.cli import seed_demo
+    with app.app_context():
+        seed_demo()
+        seed_demo()
+    res = client.post("/api/auth/login", json={"email": "jane@copperleaf.test", "password": "password123"})
+    headers = {"Authorization": f"Bearer {res.json['token']}"}
+    accounts = client.get("/api/accounts", headers=headers).json["accounts"]
+    assert len(accounts) == 2
+    res = client.post(f"/api/accounts/{accounts[0]['number']}/withdraw",
+                      json={"amount": "1", "pin": "1234"}, headers=headers)
+    assert res.status_code == 200

@@ -87,7 +87,7 @@ export default function AuthPage({ mode }) {
           </form>
           {!isRegister && (
             <p className="mt-6 rounded-2xl bg-copper-100/60 px-4 py-3 text-xs text-copper-600">
-              Demo: run <code className="money">flask seed</code> then sign in as <b>jane@copperleaf.test</b> / <b>password123</b>.
+              Demo: sign in as <b>jane@copperleaf.test</b> / <b>password123</b> — account PIN <b>1234</b>.
             </p>
           )}
         </div>
